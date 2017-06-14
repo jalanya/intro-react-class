@@ -141,7 +141,7 @@ var itemList = [
   {name: 'F', completo: false, borrado: true}
 ]
 
-ReactDOM.render(<ResumenListado items={itemList} />, document.getElementById("content"));
+//ReactDOM.render(<ResumenListado items={itemList} />, document.getElementById("content"));
 
 /*
 Initial code
@@ -184,3 +184,136 @@ class ResumenListado extends React.Component {
   }
 }
 */
+
+// React - Class: JSX
+//1
+var className='carousel';
+var imagenes= [
+  React.createElement('img', {key: 1, src: 'foto1.png'}),
+  React.createElement('img', {key: 2, src: 'foto2.png'}),
+  React.createElement('img', {key: 3, src: 'foto3.png'})
+];
+
+var el = React.createElement('div', {className: className }, imagenes);
+
+//ReactDOM.render(el, document.getElementById("content"))
+//2
+var imagenes2 = [
+  <img key={1} src="foto1.png" />,
+  <img key={2} src="foto2.png" />,
+  <img key={3} src="foto3.png" />
+];
+
+var el2 = <div className={className}>
+  {imagenes2}
+  </div>;
+
+//ReactDOM.render(el2, document.getElementById("content"))
+
+//3
+/*
+function Modal(props) {
+  return(
+    <div>hello</div>
+  );
+}
+OR
+*/
+const Modal = function(props) {
+  return(
+    <div>Hello {props.children} {props.isOpen.toString()}</div>
+  );
+}
+
+var el3 = React.createElement(Modal, { isOpen: true }, 'Contenido del modal!');
+
+//ReactDOM.render(el3, document.getElementById("content"))
+
+var el4 = <Modal isOpen={true}>
+        Contenido del modal!
+      </Modal>;
+
+//ReactDOM.render(el4, document.getElementById("content"))
+
+var el5 = <Modal isOpen>
+        Contenido del modal!
+      </Modal>;
+
+//ReactDOM.render(el5, document.getElementById("content"));
+
+// React - JSX - Desafio 1: Transforma este código a JSX
+/*Transforma este código a JSX:
+Tip
+Pista: No olvides el elemento en la llamada a ReactDOM.render*/
+/*
+class App extends React.Component {
+  render() {
+    return React.createElement('div', { className: 'aplicacion' },
+      'Hola mundo!',
+      React.createElement('p', null,
+        'Esto es un parrafo',
+        React.createElement('a', { href: 'http://google.com' }, ' con un link')
+      )
+    );
+  }
+}
+ReactDOM.render(React.createElement(App), document.getElementById('content'))
+*/
+class App extends React.Component {
+  render() {
+    return <div className={ 'application' }>Hola mundo!
+            <p>Esto es un parrafo <a href={'https://google.com' }>con un link</a></p>
+          </div>;
+  }
+}
+//ReactDOM.render(React.createElement(App), document.getElementById('content'))
+//ReactDOM.render(<App />, document.getElementById("content"))
+
+// React - JSX - Desafio 2: Transforma este código de JSX a la api de Javascript
+/*
+var app2 = <ul className="menu">
+  <li>Elemento 1</li>
+  <li style={{ backgroundColor: 'red' }}>Elemento 2</li>
+  <li style={{ backgroundColor: 'yellow' }}>Elemento 3</li>
+  <li style={{ backgroundColor: 'blue' }}>Elemento 4</li>
+ </ul>
+*/
+
+var app2 = React.createElement('ul', { className: 'menu'},
+    React.createElement('li', null, 'Elemento 1'),
+    React.createElement('li', { style: { backgroundColor: 'red' }}, 'Elemento 2'),
+    React.createElement('li', { style: { backgroundColor: 'yellow' }}, 'Elemento 3'),
+    React.createElement('li', { style: { backgroundColor: 'blue' }}, 'Elemento 4')
+);
+
+//ReactDOM.render(app2, document.getElementById("content"));
+
+// React - JSX - Desafio 3: Transforma este codigo a JSX:
+/*
+Tip
+Pista: recuerda que es equivalente a React.createElement(Componente)
+siendo Componente una clase o cualquier variable que este en el scope.
+
+Pista: Es importante la mayuscula, ya que con minuscula JSX entiende
+que se intenta crear un elemento nativo.
+
+class MenuItem extends React.Component {
+  render() {
+    var tipo = this.props.activo ? 'b' : 'span';
+    return React.createElement('a', { href: this.props.href },
+      React.createElement(tipo, null, this.props.titulo)
+    );
+  }
+}
+*/
+class MenuItem extends React.Component {
+  render() {
+    var Tipo = this.props.activo ? 'b' : 'span';
+    return <a href={ this.props.href }>
+            <Tipo>{this.props.titulo}</Tipo>
+           </a>;
+  }
+}
+
+ReactDOM.render(<MenuItem titulo={ 'Titulo...' } activo={false} />,
+                    document.getElementById("content"));
