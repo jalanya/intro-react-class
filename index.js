@@ -315,5 +315,125 @@ class MenuItem extends React.Component {
   }
 }
 
-ReactDOM.render(<MenuItem titulo={ 'Titulo...' } activo={false} />,
-                    document.getElementById("content"));
+//ReactDOM.render(<MenuItem titulo={ 'Titulo...' } activo={false} />,
+//                    document.getElementById("content"));
+
+// React - Que son los Refs
+class BotonConAutoFoco extends React.Component {
+  render() {
+    return <button
+      ref={ function(el) {
+        if (el) {
+          el.focus();
+        }
+      }}
+      >
+      {this.props.texto}
+      </button>
+  }
+}
+
+//ReactDOM.render(<BotonConAutoFoco texto={ 'Submit' } />, document.getElementById("content"));
+
+class DivConRef extends React.Component {
+
+  handleClick(ev) {
+    console.log(this.div2);
+  }
+
+  render() {
+    return <div ref={function (elemento) {
+      if (elemento) {
+        // Tengo el elemento, puedo usarlo aqui o
+        //guardarlo en la instancia del componente
+        this.div2 = elemento;
+      } else {
+        // Se desmonto el componente, puedo
+        // limpiar la referencia en la instancia
+        // del componente
+        this.div2 = null;
+      }
+    }.bind(this)} >
+    <button onClick={this.handleClick.bind(this)}>Click!</button>
+    </div>;
+  }
+}
+
+//ReactDOM.render(<DivConRef />, document.getElementById("content"));
+
+// React - Que son los Refs - Desafio 1:
+/*
+Desafío 1
+Obtener un ref al input del componente, y devolver el valor del mismo cuando se hace
+submit del formulario, en el callback prop onSubmit.
+*/
+class Formulario extends React.Component {
+  constructor(props) {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(ev) {
+    ev.preventDefault();
+    alert(this.input2.value);
+    this.props.onSubmit(this.input2.value);
+  }
+
+  render() {
+    return <form onSubmit={this.handleSubmit}>
+            <label>
+              Nombre
+              <input type="text" ref={ (ele) => {
+                  alert(this.input);
+                  console.log('this...', this); // 'this' is the component instance.
+                  console.log('ele...', ele);
+                  this.input2 = ele;
+                }} />
+            </label>
+            <button type="submit">Guardar</button>
+           </form>
+  }
+}
+//ReactDOM.render(<Formulario />, document.getElementById("content"));
+
+// React - Que son los Refs - Desafio 2:
+/*
+Utiliza el callback de ref para acceder al elemento de DOM de la imagen y escuchar el
+onload para ver su altura final, y hacer que el div junto a ella tenga el mismo alto.
+
+Tip
+Pista: Recuerda que el ref devuelve directamente el elemento de DOM cuando se aplica
+a un ReactElement nativo.
+Pista: Puedes enterarte cuando una imagen se termina de cargar con el listener
+img.onload = function() {
+...
+}
+*/
+class Ejemplo extends React.Component {
+  constructor() {
+    super();
+    this.state = { height: 0 };
+  }
+
+  render() {
+    return <div>
+            <img
+              src="https://facebook.github.io/react/img/logo.svg"
+              ref={ function (img) {
+                if (!img) return;
+                img.onload = function() {
+                  this.setState({ height: img.height })
+                }.bind(this);
+              }.bind(this) }
+            />
+            <div style={{
+              height: this.state.height,
+              backgroundColor: 'red'
+            }}>
+              Tengo el mismo alto que la imagen!
+            </div>
+          </div>;
+  }
+}
+
+ReactDOM.render(<Ejemplo />, document.getElementById("content"));
