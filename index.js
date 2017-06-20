@@ -436,4 +436,155 @@ class Ejemplo extends React.Component {
   }
 }
 
-ReactDOM.render(<Ejemplo />, document.getElementById("content"));
+//ReactDOM.render(<Ejemplo />, document.getElementById("content"));
+
+// React - Que son los propTypes:
+
+function ComponentA(props) {
+  return <div>
+        Hello Component A!!!
+      </div>;
+}
+
+ComponentA.propTypes = {
+  foo: React.PropTypes.string.isRequired,
+  bar: React.PropTypes.bool.isRequired
+}
+
+// ReactDOM.render(<ComponentA />, document.getElementById("content"));
+/*
+https://facebook.github.io/react/docs/components-and-props.html
+https://facebook.github.io/react/docs/typechecking-with-proptypes.html
+
+React.PropTypes.array
+React.PropTypes.bool
+React.PropTypes.func
+React.PropTypes.number
+React.PropTypes.object
+React.PropTypes.string
+React.PropTypes.element
+React.PropTypes.instanceOf(Usuario)
+React.PropTypes.oneOf(['value 1', 'value 2'])
+React.PropTypes.oneOfType([
+  React.PropTypes.string,
+  React.PropTypes.number,
+  React.PropTypes.instanceOf(Message)
+])
+React.PropTypes.arrayOf(
+  React.PropTypes.number
+)
+React.PropTypes.objectOf(
+  React.PropTypes.number
+)
+React.PropTypes.shape({
+  color: React.PropTypes.string,
+  fontSize: React.PropTypes.number
+})
+React.PropTypes.any
+
+// Anything that can be rendered: numbers, strings, elements or an array
+// (or fragment) containing these types.
+optionalNode: React.PropTypes.node,
+
+function(props, propName, componentName) {
+  if (!/matchme/.test(props[propName])) {
+    return new Error(
+      'Invalid prop `' + propName + '` supplied to' +
+      ' `' + componentName + '`. Validation failed.'
+    );
+  }
+}
+*/
+
+// React - Que son los propTypes - Desafio 1:
+/*
+Definir las propTypes del componente, todo excepto ancho y alto es requerido.
+Tip
+Ancho y alto pueden ser tanto numero como string, y onClick es una callback prop.
+*/
+
+class Foto extends React.Component {
+  render() {
+    return <img
+      src={this.props.urlFoto}
+      alt={this.props.textoAlternativo}
+      width={this.props.ancho}
+      height={this.props.alto}
+      onClick={this.props.onClick}
+    />
+  }
+}
+
+Foto.propTypes = {
+  urlFoto: React.PropTypes.string.isRequired,
+  textoAlternativo: React.PropTypes.string.isRequired,
+  ancho: React.PropTypes.oneOfType([
+  	React.PropTypes.string,
+    React.PropTypes.number
+  ]),
+  alto: React.PropTypes.oneOfType([
+  	React.PropTypes.string,
+    React.PropTypes.number
+  ]),
+  onClick: React.PropTypes.func.isRequired
+};
+
+ReactDOM.render(<Foto />, document.getElementById("content"));
+
+/*
+No working static propTypes = {...}
+export default class Foto2 extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+  }
+
+  static propTypes = {
+    urlFoto: React.PropTypes.string.isRequired,
+    textoAlternativo: React.PropTypes.string.isRequired,
+    ancho: React.PropTypes.oneOfType([
+    	React.PropTypes.string,
+      React.PropTypes.number
+    ]),
+    alto: React.PropTypes.oneOfType([
+    	React.PropTypes.string,
+      React.PropTypes.number
+    ]),
+    onClick: React.PropTypes.func.isRequired
+  }
+
+  render() {
+    return <img
+      src={this.props.urlFoto}
+      alt={this.props.textoAlternativo}
+      width={this.props.ancho}
+      height={this.props.alto}
+      onClick={this.props.onClick}
+    />
+  }
+}
+
+ReactDOM.render(<Foto2 />, document.getElementById("content"));
+*/
+
+// React - Que son los propTypes - Desafio 2
+/*
+Escribir el propType de las siguientes props:
+1. tamanoBoton: Un valor entre pequeño, mediano y grande
+2. children: Cualquier cosa que pueda ser renderizable como children
+(Pista: hay una propType especificamente para esto ).
+3. item: Un objeto (requerido) que tenga las propiedades:
+  3.1 id (numero, requerido)
+  3.2 nombre (string, requerido).
+  3.3 activo (booleano).
+*/
+/*
+var propTypes = {
+  tamanoBoton:  React.PropTypes.oneOf(['pequeño', 'mediano', 'grande']),
+  children:  React.PropTypes.node,
+  item:  React.PropTypes.shape({
+    id: React.PropTypes.number.isRequired,
+    nombre: React.PropTypes.string.isRequired,
+    activo: React.PropTypes.bool
+  }).isRequired
+};
+*/
