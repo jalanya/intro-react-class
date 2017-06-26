@@ -529,7 +529,7 @@ Foto.propTypes = {
   onClick: React.PropTypes.func.isRequired
 };
 
-ReactDOM.render(<Foto />, document.getElementById("content"));
+//ReactDOM.render(<Foto />, document.getElementById("content"));
 
 /*
 No working static propTypes = {...}
@@ -588,3 +588,177 @@ var propTypes = {
   }).isRequired
 };
 */
+
+// React - Re-render
+class Contador2 extends React.Component {
+  render() {
+    return React.createElement('div', null,
+      React.createElement('p', null, 'La cuenta actual es ', this.props.cuenta),
+      React.createElement('input', {
+        type: 'button',
+        value: 'Incrementar',
+        onClick: this.props.onIncrementar
+      }),
+      React.createElement('input', {
+        type: 'button',
+        value: 'Decrementar',
+        onClick: this.props.onDecrementar
+      })
+    );
+  }
+}
+
+var node1 = document.getElementById("content");
+var cuenta1 = 0
+function render1() {
+  ReactDOM.render(React.createElement(Contador2, {
+      cuenta: cuenta1,
+      onIncrementar: function() {
+        cuenta1 += 1;
+        render1();
+      },
+      onDecrementar: function() {
+        cuenta1 -= 1;
+        render1();
+      }
+    }),
+    node1
+  );
+}
+
+//render1();
+
+/*
+var node = document.getElementById('content');
+
+ReactDOM.render(
+  React.createElement(Contador, {
+    cuenta: 0,
+    onIncrementar: function() {},
+    onDecrementar: function() {}
+  }),
+  node
+);
+
+class Contador extends React.Component {
+  render() {
+    return React.createElement('div', null,
+      React.createElement('p', null, 'La cuenta actual es ', this.props.cuenta),
+      React.createElement('input', {
+        type: 'button',
+        value: 'Incrementar',
+        onClick: this.props.onIncrementar
+      }),
+      React.createElement('input', {
+        type: 'button',
+        value: 'Decrementar',
+        onClick: this.props.onDecrementar
+      })
+    );
+  }
+}
+
+
+function render(cuenta) {
+  ReactDOM.render(
+    React.createElement(Contador, {
+      cuenta: cuenta,
+      onIncrementar: function() {
+        render(cuenta + 1);
+      },
+      onDecrementar: function() {
+        render(cuenta - 1);
+      }
+    }),
+    node
+  );
+}
+
+function render(cuenta) {
+  // ...
+}
+
+render(0);
+
+
+
+
+var cuenta = 0;
+
+function render() {
+  ReactDOM.render(
+    React.createElement(Contador, {
+      cuenta: cuenta,
+      onIncrementar: function() {
+        cuenta += 1;
+        render();
+      },
+      onDecrementar: function() {
+        cuenta -= 1;
+        render();
+      }
+	}),
+    node
+  );
+}
+
+var cuenta = 0;
+
+function render() {
+  // ...
+}
+
+render();
+*/
+// React - Re-render - Desafio 1
+/*
+Dado el componente TodoList, implementar el callback prop onAddTodo que recibe un todo,
+de forma que agregue el todo a la lista y luego re-renderize la app.
+*/
+
+var node2 = document.getElementById('content');
+var todos = [];
+
+function TodoList(props) {
+  return {
+    handleAddTodo: function() {
+      var todo = {};
+      alert('TodoList..click');
+      props.onAddTodo(todo);
+    },
+    render: function() {
+      return (<div onClick={this.handleAddTodo}>Hello....</div>);
+    }
+  }
+}
+
+function render2() {
+  ReactDOM.render(React.createElement(TodoList, {
+    todos: todos,
+    onAddTodo: function(todo) {
+      alert('Add todo');
+      todos.push(todo);
+      render2();
+    }
+  }), node2);
+}
+
+//render2();
+
+// React - Re-render - Desafio 2
+/*
+Queremos que cada un segundo el contenido del elemento b cambie a la fecha
+actual.
+Tip
+ Recorda que debes usar la función:
+ setInterval()
+ Date()
+*/
+var node3 = document.getElementById('content');
+
+function render3() {
+  var date = new Date();
+  ReactDOM.render(React.createElement('b', null, date.toString()), node3);
+}
+
+setInterval(render3, 1000);
