@@ -761,4 +761,118 @@ function render3() {
   ReactDOM.render(React.createElement('b', null, date.toString()), node3);
 }
 
-setInterval(render3, 1000);
+//setInterval(render3, 1000);
+
+// React - Comunicándonos con el dueño: callback props.
+
+class BotonGuardar extends React.Component {
+  render() {
+    return React.createElement('button', {
+      type: 'button',
+      onClick: function(ev) {
+        if (this.props.habilitado) {
+          this.props.onClick(ev);
+        }
+      }.bind(this)
+    }, 'Guardar');
+  }
+}
+
+function Button1(props) {
+  return React.createElement('input', {
+          type: 'button',
+          onClick: function(ev) {
+            console.log('Hice click!');
+          },
+          value: 'Guardar'
+        });
+}
+
+function App3() {
+  return React.createElement('div', null, Button1());
+}
+
+//ReactDOM.render(<App3 />, document.getElementById('content'));
+
+function handleClick2() {
+  alert('handleClick2...omg!!');
+}
+
+function App4() {
+  return React.createElement('div', null,
+                              <BotonGuardar habilitado onClick={ handleClick2 } />);
+}
+
+//ReactDOM.render(<App4 />, document.getElementById('content'));
+
+class Lista extends React.Component {
+  render() {
+    var elementos = this.props.elementos.map(function(elemento) {
+      return React.createElement(Elemento, { elemento: elemento });
+    });
+
+    if (elementos.length === 0) {
+      elementos = this.props.renderSinResultados()
+    }
+    return React.createElement('div', null,
+      elementos
+    );
+  }
+}
+
+var app5 = React.createElement(Lista, {
+  elementos: [],
+  renderSinResultados: function () {
+    return React.createElement(
+      'p',
+      null,
+      'No hay resultados'
+    );
+  }
+});
+//<app5 /> or changing the app5 to App5 is not working on the render.
+//ReactDOM.render(app5, document.getElementById('content'));
+
+// React - Comunicándonos con el dueño: callback props: Desafío 1
+/*
+Imprimir por consola 'Click!' cada vez que hagamos click en el input.
+*/
+
+class Foo extends React.Component {
+  render() {
+    return React.createElement('input', {
+      type: 'button',
+      value: 'Clickeame',
+      onClick: 	function() {
+        console.log('Click!');
+      }
+    });
+  }
+}
+
+//ReactDOM.render(<Foo />, document.getElementById('content')) ;
+
+// React - Comunicándonos con el dueño: callback props: Desafío 2
+/*
+Implementar el componente PopOver que recibe una prop isOpen que indica
+cuando esta abierto, y otra prop renderContent que es una funcion que renderiza
+el contenido.
+ - Dibujar el contenido solo cuando isOpen es true.
+*/
+
+class PopOver extends React.Component {
+  render() {
+    return React.createElement('div', { className: 'popOver' },
+       this.props.isOpen ? this.props.renderContent(): null
+    );
+  }
+}
+
+var app = React.createElement(PopOver, {
+  isOpen: true,
+  renderContent: function() {
+    return React.createElement('div', null, 'Hola soy el contenido del popover!');
+  }
+});
+
+ReactDOM.render(app, document.getElementById('content'));
